@@ -7,6 +7,9 @@ from sklearn.linear_model import SGDClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
+from sklearn.model_selection import cross_val_score
+import itertools
+from sklearn.metrics import classification_report, confusion_matrix
 # 参数
 args = Namespace(
     seed=1234,
@@ -51,8 +54,8 @@ def interaction(df):
 
 
 
-df = interaction(df)
-print(df.head())
+# df = interaction(df)
+# print(df.head())
 
 mask = np.random.rand(len(df)) < args.train_size
 train_df = df[mask]
@@ -114,3 +117,35 @@ print("Odds ratio greater than 1:", [features[i] for i in indices[0] if coef[i] 
 print("Odds ratio less than 1:", [features[i] for i in indices[0] if coef[i] <= 1])
 
 
+scores = cross_val_score(log_reg, standardized_X_train, y_train, cv=10, scoring="accuracy")
+print("Scores:", scores)
+print("Mean:", scores.mean())
+print("Standard Deviation:", scores.std())
+
+# 绘制混淆矩阵
+def plot_confusion_matrix(cm, classes):
+    cmap=plt.cm.Blues
+    plt.imshow(cm, interpolation='nearest', cmap=cmap)
+    plt.title("Confusion Matrix")
+    plt.colorbar()
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation=45)
+    plt.yticks(tick_marks, classes)
+    plt.grid(False)
+
+    fmt = 'd'
+    thresh = cm.max() / 2.
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        plt.text(j, i, format(cm[i, j], 'd'),
+                 horizontalalignment="center",
+                 color="white" if cm[i, j] > thresh else "black")
+
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+    plt.tight_layout()
+    plt.show()
+
+# 混淆矩阵
+cm = confusion_matrix(y_test, pred_test)
+plot_confusion_matrix(cm=cm, classes=["died", "survived"])
+print (classification_report(y_test, pred_test))

@@ -29,6 +29,7 @@ def preprocess(df):
   
     # 删除掉含有空值的行
     df = df.dropna()
+    df = df.drop(["Unnamed: 0"] , axis=1) 
     return df
 
 df = preprocess(df)
@@ -53,12 +54,12 @@ print(y_test.head())
 
 
 # 初始化随机森林
-forest = LogisticRegression()
-forest.fit(X_train, y_train)
+reg = LogisticRegression()
+reg.fit(X_train, y_train)
 
 # 预测
-pred_train = forest.predict(X_train)
-pred_test = forest.predict(X_test)
+pred_train = reg.predict(X_train)
+pred_test = reg.predict(X_test)
 
 # 正确率
 train_acc = accuracy_score(y_train, pred_train)
