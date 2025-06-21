@@ -1,2 +1,5 @@
 data/
 checkpoint.pth
+*.pyc
+*.pdf
+*.md
