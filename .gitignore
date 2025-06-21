@@ -1,6 +1,0 @@
-data/
-checkpoint.pth
-*.pyc
-*.pdf
-exp4/*.md
-.gitignore
