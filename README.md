@@ -1,4 +1,4 @@
-This is the experiment of Machine Learning course taught by Wuhan University
+This is the experiment of Machine Learning (2025 fall) in Wuhan University
 
 - exp1: linear regression
 - exp2: logistic regression
